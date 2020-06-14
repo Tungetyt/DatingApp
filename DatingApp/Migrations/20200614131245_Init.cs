@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using NetTopologySuite.Geometries;
 
 namespace DatingApp.Migrations
 {
@@ -8,20 +7,6 @@ namespace DatingApp.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "AspNetRoles",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "City",
                 columns: table => new
@@ -50,7 +35,7 @@ namespace DatingApp.Migrations
                 name: "University",
                 columns: table => new
                 {
-                    UniversityId = table.Column<int>(nullable: false),
+                    UniversityId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 255, nullable: false)
                 },
                 constraints: table =>
@@ -59,47 +44,13 @@ namespace DatingApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
+                name: "Person",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(nullable: false),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    PersonId = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(unicode: false, maxLength: 256, nullable: false),
+                    PersonId = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(unicode: false, nullable: false),
                     PasswordHash = table.Column<string>(unicode: false, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "date", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "date", nullable: true),
                     Name = table.Column<string>(maxLength: 255, nullable: true),
                     Discriminator = table.Column<string>(nullable: false),
                     Salary = table.Column<decimal>(type: "money", nullable: true),
@@ -110,98 +61,13 @@ namespace DatingApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.PrimaryKey("PK_Person", x => x.PersonId);
                     table.ForeignKey(
                         name: "user_city",
                         column: x => x.CityId,
                         principalTable: "City",
                         principalColumn: "CityId",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(nullable: false),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
-                columns: table => new
-                {
-                    LoginProvider = table.Column<string>(nullable: false),
-                    ProviderKey = table.Column<string>(nullable: false),
-                    ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
-                    table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserRoles",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserTokens",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(nullable: false),
-                    LoginProvider = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    Value = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
-                    table.ForeignKey(
-                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,7 +78,7 @@ namespace DatingApp.Migrations
                     MaxSearchDistance = table.Column<int>(nullable: true),
                     Age = table.Column<int>(nullable: true),
                     Gender = table.Column<int>(nullable: true),
-                    UniversityId = table.Column<int>(nullable: true),
+                    UniversityId = table.Column<string>(nullable: true),
                     InterestId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -231,10 +97,10 @@ namespace DatingApp.Migrations
                         principalColumn: "UniversityId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Filter_AspNetUsers_UserId",
+                        name: "FK_Filter_Person_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -252,14 +118,14 @@ namespace DatingApp.Migrations
                     table.ForeignKey(
                         name: "matched_users_user1",
                         column: x => x.UserId1,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "matched_users_user",
                         column: x => x.UserId2,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -277,8 +143,8 @@ namespace DatingApp.Migrations
                     table.ForeignKey(
                         name: "picture_user",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -287,7 +153,7 @@ namespace DatingApp.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    UniversityId = table.Column<int>(nullable: false),
+                    UniversityId = table.Column<string>(nullable: false),
                     IsGraduated = table.Column<bool>(nullable: true),
                     FieldOfStudy = table.Column<string>(maxLength: 255, nullable: true)
                 },
@@ -303,8 +169,8 @@ namespace DatingApp.Migrations
                     table.ForeignKey(
                         name: "university_attendance_user",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -327,8 +193,8 @@ namespace DatingApp.Migrations
                     table.ForeignKey(
                         name: "user_interest_user",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -347,14 +213,14 @@ namespace DatingApp.Migrations
                     table.ForeignKey(
                         name: "users_relation_user1",
                         column: x => x.ActiveUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "users_relation_user",
                         column: x => x.PassiveUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -364,8 +230,7 @@ namespace DatingApp.Migrations
                 {
                     UserId = table.Column<string>(nullable: false),
                     Popularity = table.Column<int>(nullable: false),
-                    ActivityIntensity = table.Column<int>(nullable: false),
-                    Localisation = table.Column<Geometry>(nullable: false)
+                    ActivityIntensity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -373,8 +238,8 @@ namespace DatingApp.Migrations
                     table.ForeignKey(
                         name: "user_tracking_user",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -400,50 +265,6 @@ namespace DatingApp.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetRoleClaims_RoleId",
-                table: "AspNetRoleClaims",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                table: "AspNetRoles",
-                column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserClaims_UserId",
-                table: "AspNetUserClaims",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserLogins_UserId",
-                table: "AspNetUserLogins",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_RoleId",
-                table: "AspNetUserRoles",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "EmailIndex",
-                table: "AspNetUsers",
-                column: "NormalizedEmail");
-
-            migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers",
-                column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_CityId",
-                table: "AspNetUsers",
-                column: "CityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Filter_InterestId",
                 table: "Filter",
                 column: "InterestId");
@@ -457,6 +278,11 @@ namespace DatingApp.Migrations
                 name: "IX_Matched_users_UserId2",
                 table: "Matched_users",
                 column: "UserId2");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Person_CityId",
+                table: "Person",
+                column: "CityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UniversityAttendance_UniversityId",
@@ -476,21 +302,6 @@ namespace DatingApp.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AspNetRoleClaims");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserClaims");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserLogins");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserTokens");
-
             migrationBuilder.DropTable(
                 name: "Filter");
 
@@ -513,9 +324,6 @@ namespace DatingApp.Migrations
                 name: "UserTracking");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
                 name: "Matched_users");
 
             migrationBuilder.DropTable(
@@ -525,7 +333,7 @@ namespace DatingApp.Migrations
                 name: "Interest");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Person");
 
             migrationBuilder.DropTable(
                 name: "City");

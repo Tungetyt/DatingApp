@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DatingApp.Models
+﻿namespace DatingApp.Models
 {
-    public partial class UniversityAttendance
+    public class UniversityAttendance
     {
         public string UserId { get; set; }
-        public int UniversityId { get; set; }
+        public string UniversityId { get; set; }
         public bool? IsGraduated { get; set; }
         public string FieldOfStudy { get; set; }
 

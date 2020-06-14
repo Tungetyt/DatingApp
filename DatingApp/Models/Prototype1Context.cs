@@ -1,11 +1,9 @@
 ﻿using System;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DatingApp.Models
 {
-    public partial class Prototype1Context : IdentityDbContext<Person>
+    public class Prototype1Context : DbContext
     {
         public Prototype1Context()
         {
@@ -36,8 +34,10 @@ namespace DatingApp.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-46NBAHQ\\MSSQLSERVER01;Initial Catalog=Prototype1;Integrated Security=True", x => x.UseNetTopologySuite());
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http: //go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer(
+                    "Data Source=DESKTOP-46NBAHQ\\MSSQLSERVER01;Initial Catalog=Prototype1;Integrated Security=True",
+                    x => x.UseNetTopologySuite());
             }
         }
 
@@ -45,14 +45,7 @@ namespace DatingApp.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Admin>(entity =>
-            {
-
-
-                entity.Property(e => e.Salary).HasColumnType("money");
-
-
-            });
+            modelBuilder.Entity<Admin>(entity => { entity.Property(e => e.Salary).HasColumnType("money"); });
 
             modelBuilder.Entity<City>(entity =>
             {
@@ -65,9 +58,6 @@ namespace DatingApp.Models
 
             modelBuilder.Entity<Filter>(entity =>
             {
-
-
-
                 entity.HasOne(d => d.Interest)
                     .WithMany(p => p.Filter)
                     .HasForeignKey(d => d.InterestId)
@@ -77,8 +67,6 @@ namespace DatingApp.Models
                     .WithMany(p => p.Filter)
                     .HasForeignKey(d => d.UniversityId)
                     .HasConstraintName("filter_university");
-
-
             });
 
             modelBuilder.Entity<Interest>(entity =>
@@ -96,7 +84,6 @@ namespace DatingApp.Models
                     .HasName("Matched_users_pk");
 
                 entity.ToTable("Matched_users");
-
 
 
                 entity.Property(e => e.CreatedAt).HasColumnType("date");
@@ -120,9 +107,6 @@ namespace DatingApp.Models
                     .HasName("Message_pk");
 
 
-
-
-
                 entity.Property(e => e.CreatedAt).HasColumnType("date");
 
                 entity.Property(e => e.Message1)
@@ -139,7 +123,6 @@ namespace DatingApp.Models
 
             modelBuilder.Entity<Person>(entity =>
             {
-
                 entity.Property(e => e.CreatedAt).HasColumnType("date");
 
                 entity.Property(e => e.Email)
@@ -173,15 +156,7 @@ namespace DatingApp.Models
                     .HasConstraintName("picture_user");
             });
 
-            modelBuilder.Entity<PremiumUser>(entity =>
-            {
-
-
-
-                entity.Property(e => e.CreatedAt).HasColumnType("date");
-
-
-            });
+            modelBuilder.Entity<PremiumUser>(entity => { entity.Property(e => e.CreatedAt).HasColumnType("date"); });
 
             modelBuilder.Entity<University>(entity =>
             {
@@ -196,7 +171,6 @@ namespace DatingApp.Models
             {
                 entity.HasKey(e => new { e.UserId, e.UniversityId })
                     .HasName("UniversityAttendance_pk");
-
 
 
                 entity.Property(e => e.FieldOfStudy).HasMaxLength(255);
@@ -216,8 +190,6 @@ namespace DatingApp.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-
-
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
                 entity.Property(e => e.Description).HasMaxLength(255);
@@ -226,8 +198,6 @@ namespace DatingApp.Models
                     .WithMany(p => p.User)
                     .HasForeignKey(d => d.CityId)
                     .HasConstraintName("user_city");
-
-
             });
 
             modelBuilder.Entity<UserInterest>(entity =>
@@ -255,8 +225,7 @@ namespace DatingApp.Models
                     .HasName("UserTracking_pk");
 
 
-
-                entity.Property(e => e.Localisation).IsRequired();
+                //entity.Property(e => e.Localisation).IsRequired();
 
                 entity.HasOne(d => d.User)
                     .WithOne(p => p.UserTracking)
@@ -286,9 +255,12 @@ namespace DatingApp.Models
                     .HasConstraintName("users_relation_user");
             });
 
-            OnModelCreatingPartial(modelBuilder);
+            //OnModelCreatingPartial(modelBuilder);
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        //private void OnModelCreatingPartial(ModelBuilder modelBuilder)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

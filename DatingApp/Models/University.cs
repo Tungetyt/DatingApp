@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DatingApp.Models
 {
-    public partial class University
+    public class University
     {
         public University()
         {
@@ -11,7 +10,7 @@ namespace DatingApp.Models
             UniversityAttendance = new HashSet<UniversityAttendance>();
         }
 
-        public int UniversityId { get; set; }
+        public string UniversityId { get; set; }
         public string Name { get; set; }
 
         public virtual ICollection<Filter> Filter { get; set; }

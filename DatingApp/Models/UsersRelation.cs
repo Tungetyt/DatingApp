@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace DatingApp.Models
 {
-    public partial class UsersRelation
+    public class UsersRelation
     {
         public string ActiveUserId { get; set; }
         public string PassiveUserId { get; set; }

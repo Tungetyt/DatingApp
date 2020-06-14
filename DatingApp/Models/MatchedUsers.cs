@@ -4,16 +4,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DatingApp.Models
 {
-    public partial class MatchedUsers
+    public class MatchedUsers
     {
         public MatchedUsers()
         {
             Message = new HashSet<Message>();
         }
-        [Key]
-        public string UserId1 { get; set; }
-        [Key]
-        public string UserId2 { get; set; }
+
+        [Key] public string UserId1 { get; set; }
+
+        [Key] public string UserId2 { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public virtual User UserId1Navigation { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DatingApp.Models
 {
-    public partial class User : Person
+    public class User : Person
     {
         public User()
         {
@@ -15,8 +15,8 @@ namespace DatingApp.Models
             UsersRelationPassiveUser = new HashSet<UsersRelation>();
         }
 
-        public int Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public int? Gender { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string Description { get; set; }
         public int? CityId { get; set; }
 

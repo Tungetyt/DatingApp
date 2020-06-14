@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DatingApp.Models
+﻿namespace DatingApp.Models
 {
-    public partial class Picture
+    public class Picture
     {
         public string UserId { get; set; }
         public byte[] Picture1 { get; set; }

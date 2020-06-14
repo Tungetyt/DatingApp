@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace DatingApp.Models
 {
-    public partial class Message
+    public class Message
     {
         public string SenderUserId { get; set; }
         public string RecieverUserId { get; set; }
