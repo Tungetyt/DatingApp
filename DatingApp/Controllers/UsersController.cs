@@ -54,14 +54,14 @@ namespace DatingApp.Controllers
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(string id)
+        [HttpGet]
+        public async Task<ActionResult<List<User>>> GetUsers()
         {
-            var user = await _context.User.FindAsync(id);
+            var users = await _context.User.ToListAsync();
 
-            if (user == null) return NotFound();
+            if (users == null) return NotFound();
 
-            return user;
+            return users;
         }
 
         // PUT: api/Users/5
