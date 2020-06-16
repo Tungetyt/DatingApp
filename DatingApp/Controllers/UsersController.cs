@@ -24,7 +24,7 @@ namespace DatingApp.Controllers
         {
             //var universityNameFilter = userGetProfilesToMatchDTO.University;
             List<User> usersToReturn;
-            if (userGetProfilesToMatchDTO.University is null || userGetProfilesToMatchDTO.University == "")
+            if (userGetProfilesToMatchDTO.UniversityFilter is null || userGetProfilesToMatchDTO.UniversityFilter == "")
                 usersToReturn = await _context.User.ToListAsync();
             else
             {
@@ -46,7 +46,7 @@ namespace DatingApp.Controllers
 
                 usersToReturn = await (from us in _context.User
                                        from un in _context.University
-                                       where un.Name == userGetProfilesToMatchDTO.University
+                                       where un.Name == userGetProfilesToMatchDTO.UniversityFilter
                                        select us).ToListAsync();
             }
 

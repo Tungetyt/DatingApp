@@ -28,7 +28,7 @@ namespace DatingApp.Controllers
         {
             //var universityNameFilter = userGetProfilesToMatchDTO.University;
             List<ProfileToShowInMatching> usersToReturn;
-            if (userGetProfilesToMatchDTO.University is null || userGetProfilesToMatchDTO.University == "")
+            if (userGetProfilesToMatchDTO.UniversityFilter is null || userGetProfilesToMatchDTO.UniversityFilter == "")
             {
                 //usersToReturn = await (from us in _context.User
                 //                       from un in _context.University
@@ -79,7 +79,8 @@ namespace DatingApp.Controllers
                 //https://stackoverflow.com/questions/15829309/remove-item-have-same-key-in-list-c-sharp
                 var usersToReturn1 = await (from us in _context.User
                                             from un in _context.University
-                                            where us.PersonId != userGetProfilesToMatchDTO.Id
+                                            from ua in _context.UniversityAttendance
+                                            where us.PersonId != userGetProfilesToMatchDTO.Id && us.PersonId == ua.UserId && un.UniversityId == ua.UniversityId
                                             select new ProfileToShowInMatching
                                             {
                                                 Name = us.Name,
@@ -114,7 +115,8 @@ namespace DatingApp.Controllers
                 //                       select us).ToListAsync();
                 usersToReturn = await (from us in _context.User
                                        from un in _context.University
-                                       where un.Name == userGetProfilesToMatchDTO.University && us.PersonId != userGetProfilesToMatchDTO.Id
+                                       from ua in _context.UniversityAttendance
+                                       where un.Name == userGetProfilesToMatchDTO.UniversityFilter && us.PersonId != userGetProfilesToMatchDTO.Id && us.PersonId == ua.UserId && un.UniversityId == ua.UniversityId
                                        select new ProfileToShowInMatching
                                        {
                                            Name = us.Name,
@@ -123,6 +125,11 @@ namespace DatingApp.Controllers
                                            Gender = us.Gender,
                                            Id = us.PersonId
                                        }).ToListAsync();
+                //usersToReturn =
+                //    usersToReturn.FindAll(u => u.Universities.(u => u.Name == userGetProfilesToMatchDTO.UniversityFilter));
+
+                //usersToReturn = usersToReturn.Where(p =>
+                //    p.Universities.Exists(un => un.Name == userGetProfilesToMatchDTO.UniversityFilter)).ToList();
             }
 
             return usersToReturn;
